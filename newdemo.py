@@ -55,7 +55,7 @@ def gen_data(X,Y,batch_size):
             x_train_b[i,:,:,:] = X[i+offset,:,:,:]
             y_train_b[i] = Y[i+offset]
             
-        yield (X, Y)
+        yield (x_train_b, y_train_b)
         offset += batch_size
 
 save_best = ModelCheckpoint('saved_model.h5', monitor='val_loss',verbose=1, save_best_only=True, save_weights_only=True, mode='auto')
@@ -65,5 +65,5 @@ history = model.fit_generator(generator=gen_data(x_train,y_train,32),
                             epochs=20,
                             verbose=1,
                             callbacks=[save_best],
-                            validation_steps = len(x_test)//32,
-                            validation_data=gen_data(x_test,y_test,32))
+                            validation_steps = len(x_test),
+                            validation_data=gen_data(x_test,y_test,1))
