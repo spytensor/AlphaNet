@@ -4,7 +4,7 @@ from JZMF.lib.HistoryMD import his_md
 import pandas as pd
 import os
 
-PROJECT_PATH = r'D:\code\AlphaNet'
+PROJECT_PATH = r'/'
 
 def generate_one_xy(date, backward_window=30, forward_window=10, if_logging=False):
     """

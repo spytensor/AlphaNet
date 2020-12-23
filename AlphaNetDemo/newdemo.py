@@ -1,12 +1,10 @@
-
 import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
 from tensorflow.keras.layers import Input,Conv2D, BatchNormalization, Activation, MaxPool2D, Dropout, Flatten, Dense
-from tensorflow.keras import Model,Sequential
+from tensorflow.keras import Sequential
 from tensorflow.keras.optimizers import Adam
-from data_process import generate_one_xy
 
+DB_PATH = r'/db/2020-10-30'
 
 
 model = Sequential()
@@ -23,8 +21,8 @@ model.add(Dense(1))
 
 model.summary()
 
-x = pd.read_pickle("xdata_b30_f10.pkl")
-y = pd.read_pickle("ydata_b30_f10.pkl")
+x = pd.read_pickle(DB_PATH+r"\xdata_b30_f10.pkl")
+y = pd.read_pickle(DB_PATH+r"\ydata_b30_f10.pkl")
 
 #对所有x归一化
 nx = np.zeros(np.shape(x))
@@ -42,7 +40,7 @@ ny = (y+1)/2
 ad = Adam(lr=0.0001,beta_1=0.9,beta_2=0.999,epsilon= 1e-8)
 model.compile(optimizer=ad,loss='mse')
 
-history = model.fit(x_train, y_train, batch_size=32, epochs=20, validation_data=(x_test, y_test),
+history = model.fit(x_train, y_train, batch_size=1, epochs=20, validation_data=(x_test, y_test),
                     validation_freq=1)
 
  

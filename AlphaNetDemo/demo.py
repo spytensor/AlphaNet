@@ -4,14 +4,14 @@ from abc import ABC
 # import numpy as np
 # import pandas as pd
 from matplotlib import pyplot as plt
-from tensorflow.keras.layers import Conv2D, BatchNormalization, Activation, MaxPool2D, Dropout, Flatten, Dense
+from tensorflow.keras.layers import Conv2D, BatchNormalization, Activation, MaxPool2D, Dropout, Flatten, Dense, Input
 from tensorflow.keras import Model
 from tensorflow.keras.optimizers import Adam
-from .data_process import generate_one_xy
+from AlphaNetDemo.data_process import generate_one_xy
 
 
 def demo():
-    """22222
+    """
     :return:
     """
     x_data, y_data = generate_one_xy('2020-10-30')
@@ -104,6 +104,10 @@ def custom_layer(if_logging=True):
     d2 = Dropout(0.2)
     f2 = Dense(1)
 
+    i1 = Input((8,30,1))
+    # xi = i1(x_data)
+    print(i1.shape)
+
     x1 = c1(x_train)
     x2 = b1(x1)
     x3 = a1(x2)
@@ -119,6 +123,7 @@ def custom_layer(if_logging=True):
     x7 = f1(x6)
     x8 = d2(x7)
     x9 = f2(x8)
+
     if if_logging:
         print(x6.shape)  # (3000, 48)
         print(x7.shape)
@@ -133,5 +138,5 @@ def custom_layer(if_logging=True):
 
 
 if __name__ == '__main__':
-    demo()
-    # custom_layer(False)
+    # demo()
+    custom_layer(False)
