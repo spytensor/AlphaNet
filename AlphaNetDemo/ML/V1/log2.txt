@@ -1,0 +1,81 @@
+C:\ProgramData\Anaconda3\envs\tensorflow20201207\python.exe D:/code/AlphaNet/AlphaNetDemo/training.py
+2020-12-25 17:19:52.349975: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'cudart64_101.dll'; dlerror: cudart64_101.dll not found
+2020-12-25 17:19:52.350109: I tensorflow/stream_executor/cuda/cudart_stub.cc:29] Ignore above cudart dlerror if you do not have a GPU set up on your machine.
+2020-12-25 17:19:53.737867: W tensorflow/stream_executor/platform/default/dso_loader.cc:59] Could not load dynamic library 'nvcuda.dll'; dlerror: nvcuda.dll not found
+2020-12-25 17:19:53.737999: W tensorflow/stream_executor/cuda/cuda_driver.cc:312] failed call to cuInit: UNKNOWN ERROR (303)
+2020-12-25 17:19:53.738794: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:169] retrieving CUDA diagnostic information for host: WIN-J3NS7L4KRVM
+2020-12-25 17:19:53.738871: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:176] hostname: WIN-J3NS7L4KRVM
+2020-12-25 17:19:53.739068: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN)to use the following CPU instructions in performance-critical operations:  AVX2
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2020-12-25 17:19:53.745503: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0xffbb3c7e20 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-12-25 17:19:53.745634: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #
+=================================================================
+conv2d (Conv2D)              (None, 1, 3, 7)           70
+_________________________________________________________________
+batch_normalization (BatchNo (None, 1, 3, 7)           28
+_________________________________________________________________
+max_pooling2d (MaxPooling2D) (None, 1, 1, 7)           0
+_________________________________________________________________
+flatten (Flatten)            (None, 7)                 0
+_________________________________________________________________
+dense (Dense)                (None, 30)                240
+_________________________________________________________________
+dropout (Dropout)            (None, 30)                0
+_________________________________________________________________
+dense_1 (Dense)              (None, 1)                 31
+=================================================================
+Total params: 369
+Trainable params: 355
+Non-trainable params: 14
+_________________________________________________________________
+WARNING:tensorflow:From D:/code/AlphaNet/AlphaNetDemo/training.py:67: Model.fit_generator (from tensorflow.python.keras.engine.training) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use Model.fit, which supports generators.
+2020-12-25 17:19:53,803 deprecation.py[line:323] WARNING From D:/code/AlphaNet/AlphaNetDemo/training.py:67: Model.fit_generator (from tensorflow.python.keras.engine.training) is deprecated and will be removed in a future version.
+Instructions for updating:
+Please use Model.fit, which supports generators.
+Epoch 1/12
+10/10 [==============================] - 0s 10ms/step - loss: 0.2427
+Epoch 2/12
+10/10 [==============================] - 0s 11ms/step - loss: 0.1809
+Epoch 3/12
+10/10 [==============================] - 0s 12ms/step - loss: 0.1505
+Epoch 4/12
+10/10 [==============================] - 0s 13ms/step - loss: 0.1435
+Epoch 5/12
+10/10 [==============================] - 0s 13ms/step - loss: 0.1181
+Epoch 6/12
+10/10 [==============================] - 0s 13ms/step - loss: 0.1154
+Epoch 7/12
+10/10 [==============================] - 0s 13ms/step - loss: 0.1122
+Epoch 8/12
+10/10 [==============================] - 0s 13ms/step - loss: 0.1008
+Epoch 9/12
+10/10 [==============================] - 0s 11ms/step - loss: 0.0989
+Epoch 10/12
+10/10 [==============================] - 0s 11ms/step - loss: 0.0965
+Epoch 11/12
+10/10 [==============================] - 0s 11ms/step - loss: 0.0953
+Epoch 12/12
+10/10 [==============================] - 0s 12ms/step - loss: 0.0937
+WARNING:tensorflow:From C:\ProgramData\Anaconda3\envs\tensorflow20201207\lib\site-packages\tensorflow\python\training\tracking\tracking.py:111: Model.state_updates (from tensorflow.python.keras.engine.training) is deprecated and will be removed in a future version.
+Instructions for updating:
+This property should not be used in TensorFlow 2.0, as updates are applied automatically.
+2020-12-25 17:19:55,958 deprecation.py[line:323] WARNING From C:\ProgramData\Anaconda3\envs\tensorflow20201207\lib\site-packages\tensorflow\python\training\tracking\tracking.py:111: Model.state_updates (from tensorflow.python.keras.engine.training) is deprecated and will be removed in a future version.
+Instructions for updating:
+This property should not be used in TensorFlow 2.0, as updates are applied automatically.
+2020-12-25 17:19:55.959838: W tensorflow/python/util/util.cc:348] Sets are not currently considered sequences, but this may change in the future, so consider avoiding using them.
+WARNING:tensorflow:From C:\ProgramData\Anaconda3\envs\tensorflow20201207\lib\site-packages\tensorflow\python\training\tracking\tracking.py:111: Layer.updates (from tensorflow.python.keras.engine.base_layer) is deprecated and will be removed in a future version.
+Instructions for updating:
+This property should not be used in TensorFlow 2.0, as updates are applied automatically.
+2020-12-25 17:19:55,965 deprecation.py[line:323] WARNING From C:\ProgramData\Anaconda3\envs\tensorflow20201207\lib\site-packages\tensorflow\python\training\tracking\tracking.py:111: Layer.updates (from tensorflow.python.keras.engine.base_layer) is deprecated and will be removed in a future version.
+Instructions for updating:
+This property should not be used in TensorFlow 2.0, as updates are applied automatically.
+INFO:tensorflow:Assets written to: AlphaModel\assets
+2020-12-25 17:19:56,618 builder_impl.py[line:775] INFO Assets written to: AlphaModel\assets
+0.09338067471981049
+
+Process finished with exit code 0

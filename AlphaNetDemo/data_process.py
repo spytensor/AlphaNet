@@ -4,9 +4,10 @@ from JZMF.lib.HistoryMD import his_md
 import pandas as pd
 import os
 
-PROJECT_PATH = r'/'
+PROJECT_PATH = r'D:\code\AlphaNet'
 
-def generate_one_xy(date, backward_window=30, forward_window=10, if_logging=False):
+
+def generate_one_day_xy(date, backward_window=30, forward_window=10, if_logging=False):
     """
     https://www.jianshu.com/p/fc2fe026f002
     :param if_logging:
@@ -15,12 +16,14 @@ def generate_one_xy(date, backward_window=30, forward_window=10, if_logging=Fals
     :param forward_window:
     :return:
     """
-    if not os.path.exists(PROJECT_PATH+r'\db\{}'.format(date)):
-        os.makedirs(PROJECT_PATH+r'\db\{}'.format(date))
+    if not os.path.exists(PROJECT_PATH + r'\db\{}'.format(date)):
+        os.makedirs(PROJECT_PATH + r'\db\{}'.format(date))
 
-    if os.path.exists(PROJECT_PATH+r'\db\{}\xdata_b{}_f{}.pkl'.format(date,backward_window,forward_window)):
-        return pd.read_pickle(PROJECT_PATH+r'\db\{}\xdata_b{}_f{}.pkl'.format(date,backward_window,forward_window)), \
-               pd.read_pickle(PROJECT_PATH + r'\db\{}\ydata_b{}_f{}.pkl'.format(date,backward_window, forward_window))
+    if os.path.exists(PROJECT_PATH + r'\db\{}\xdata_b{}_f{}.pkl'.format(date, backward_window, forward_window)):
+        print('already exists!')
+        return pd.read_pickle(PROJECT_PATH + r'\db\{}\xdata_b{}_f{}.pkl'.format(date, backward_window, forward_window)), \
+               pd.read_pickle(PROJECT_PATH + r'\db\{}\ydata_b{}_f{}.pkl'.format(date, backward_window, forward_window)), \
+               pd.read_pickle(PROJECT_PATH + r'\db\{}\micdf_b{}_f{}.pkl'.format(date, backward_window, forward_window))
 
     begDate = utility.shift_tradeday(date, -backward_window + 1)
     endDate = date
@@ -44,23 +47,25 @@ def generate_one_xy(date, backward_window=30, forward_window=10, if_logging=Fals
         midf.index = pd.MultiIndex.from_product([[data_name], midf.index])
         midf_list.append(midf)
     micdf = pd.concat(midf_list, axis=0, sort=True)
-    pd.to_pickle(micdf,PROJECT_PATH+r'\db\{}\micdf_b{}_f{}.pkl'.format(date,backward_window,forward_window))
 
+    ret_s = utility.get_price_change(date, utility.shift_tradeday(date, forward_window), codes=micdf.columns)
+    ret_df = ret_s.rank(pct=True).to_frame().T
+    ret_df.index = pd.MultiIndex.from_product([['ret'],['ret_ratio']])
+    micdf = pd.concat([micdf,ret_df],axis=0,sort=True)
+
+    pd.to_pickle(micdf, PROJECT_PATH + r'\db\{}\micdf_b{}_f{}.pkl'.format(date, backward_window, forward_window))
+    micdf.dropna(axis=1, inplace=True)
 
 
     micdf.stock_num = micdf.shape[1]
     micdf.days_num = backward_window
     micdf.field_num = len(data_name_list)
 
+    x_data = micdf.iloc[:-1].T.values.reshape(micdf.stock_num, micdf.field_num, micdf.days_num, 1, order='C')
+    pd.to_pickle(x_data, PROJECT_PATH + r'\db\{}\xdata_b{}_f{}.pkl'.format(date, backward_window, forward_window))
 
-
-    x_data = micdf.T.values.reshape(micdf.stock_num, micdf.field_num, micdf.days_num,1, order='C')
-    pd.to_pickle(x_data,PROJECT_PATH+r'\db\{}\xdata_b{}_f{}.pkl'.format(date,backward_window,forward_window))
-
-
-    y_data = utility.get_price_change(date, utility.shift_tradeday(date, forward_window), codes=micdf.columns).values
-    pd.to_pickle(y_data,PROJECT_PATH+r'\db\{}\ydata_b{}_f{}.pkl'.format(date,backward_window,forward_window))
-
+    y_data = micdf.iloc[-1].values
+    pd.to_pickle(y_data, PROJECT_PATH + r'\db\{}\ydata_b{}_f{}.pkl'.format(date, backward_window, forward_window))
 
     if if_logging:
         print(micdf)
@@ -70,8 +75,23 @@ def generate_one_xy(date, backward_window=30, forward_window=10, if_logging=Fals
         print(x_data.shape)
         print(y_data.shape)
 
-    return x_data, y_data
+    return x_data, y_data, micdf
+
+def generate_all_xy():
+    """
+
+    :return:
+    """
+    begDate = '2017-01-01'
+    endDate = '2020-10-01'
+    period = 'week'
+    dtype = 'tail'
+    interval = 2
+
+    trade_date = utility.make_period_range(begDate, endDate, period, dtype)[::interval]
+    for date in trade_date:
+        generate_one_day_xy(date)
 
 
 if __name__ == '__main__':
-    generate_one_xy('2020-10-30')
+    generate_all_xy()
